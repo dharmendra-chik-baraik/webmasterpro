@@ -1,0 +1,49 @@
+End User License Agreement (EULA) for WebMasterPro Plugin
+
+1. License Grant:
+   You are granted a non-exclusive, non-transferable license to use the WebMasterPro plugin, provided you have a valid and active license. This allows you to install and use the plugin on your website(s) in accordance with the license type purchased. License types include:
+   - **Single Site License:** Use on one website.
+   - **Multi-Site License:** Use on multiple websites you own.
+   - **Developer License:** Use on multiple client websites.
+   
+   You may use the plugin only for the duration of the license term purchased. Upon expiration of the license term, you must renew your license to continue receiving updates and support.
+
+2. Ownership:
+   The WebMasterPro plugin is the intellectual property of WebMasterPro. This EULA does not transfer any ownership rights. You are provided a license to use the plugin under the terms specified. All rights not expressly granted are reserved by WebMasterPro.
+
+3. Restrictions:
+   You may not redistribute, sell, lease, or sublicense the WebMasterPro plugin without explicit permission from WebMasterPro. You are also prohibited from reverse engineering, decompiling, or attempting to derive the source code of the plugin, except where such activity is expressly permitted by applicable law.
+
+4. Third-Party Components:
+   WebMasterPro may include third-party libraries and components licensed under the GPL or other licenses. These components are used in accordance with their respective licenses and do not affect the proprietary nature of the WebMasterPro plugin itself. You must comply with the terms of these third-party licenses.
+
+5. Support and Updates:
+   With a valid license, you are entitled to receive support and updates for the duration of your license term. WebMasterPro reserves the right to limit or discontinue support for any reason, including end of life of the plugin. Updates may include enhancements, new features, and bug fixes.
+
+6. Data Collection and Privacy:
+   WebMasterPro may collect certain data for functionality or to improve user experience. This data is handled in accordance with our Privacy Policy [link to privacy policy]. By using the plugin, you consent to such data collection and usage.
+
+7. Warranty Disclaimer:
+   The WebMasterPro plugin is provided "as is" without any warranties of any kind. WebMasterPro disclaims all warranties, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement.
+
+8. Limitation of Liability:
+   In no event shall WebMasterPro be liable for any damages arising from the use or inability to use the plugin, including but not limited to direct, indirect, incidental, special, or consequential damages, even if WebMasterPro has been advised of the possibility of such damages. WebMasterPro's total liability shall not exceed the amount paid for the plugin.
+
+9. Indemnification:
+   You agree to indemnify and hold harmless WebMasterPro from any claims, damages, losses, liabilities, and expenses arising out of your use of the WebMasterPro plugin or any breach of this EULA.
+
+10. Termination:
+    WebMasterPro reserves the right to terminate your license and access to the plugin if you violate any terms of this EULA. Upon termination, you must cease all use of the plugin and destroy all copies in your possession.
+
+11. Governing Law:
+    This EULA shall be governed by and construed in accordance with the laws of India for users residing in India. For users outside India, this EULA shall be governed by the laws applicable in their respective jurisdictions, and any disputes shall be subject to the exclusive jurisdiction of the courts in their jurisdiction.
+
+12. Entire Agreement:
+    This EULA constitutes the entire agreement between you and WebMasterPro regarding the use of the plugin and supersedes all prior agreements and understandings, whether written or oral, relating to the subject matter hereof.
+
+13. Refund Policy:
+    If applicable, refunds are provided under the conditions specified in our Refund Policy [link to refund policy]. Typically, this includes a money-back guarantee period within 30 days of purchase if the plugin does not meet your needs.
+
+14. Contact Information:
+    For any inquiries regarding this EULA or the use of WebMasterPro, please contact [CyberXDC Support](mailto:contact@cyberxdc.online).
+

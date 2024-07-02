@@ -1,0 +1,181 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+.card {
+    background-color: #ffffff !important;
+    border: 1px solid #dddddd !important;
+    border-radius: 5px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    margin-bottom: 15px !important;
+}
+
+.webmasterpro-admin h1,
+.webmasterpro-admin h2,
+.webmasterpro-admin h3,
+.webmasterpro-admin h4,
+.webmasterpro-admin h5,
+.webmasterpro-admin h6 {
+    color: #06D001 !important;
+}
+
+.webmasterpro-admin h2 {
+    font-size: 22px !important;
+}
+
+.webmasterpro-admin .postbox .inside h2,
+.webmasterpro-admin .wrap [class$=icon32]+h2,
+.webmasterpro-admin .wrap h1,
+.webmasterpro-admin .wrap>h2:first-child {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.container>.card {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.webmasterpro-admin .container {
+    max-width: 1240px;
+}
+
+.row.card {
+    max-width: 100% !important;
+}
+
+/* Row class */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Column class */
+.col {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    max-width: 49% !important;
+}
+
+/* Column width classes */
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+/* Column width for specific sizes */
+@media (min-width: 576px) {
+
+    .col-sm-1,
+    .col-sm-2,
+    .col-sm-3,
+    .col-sm-4,
+    .col-sm-5,
+    .col-sm-6,
+    .col-sm-7,
+    .col-sm-8,
+    .col-sm-9,
+    .col-sm-10,
+    .col-sm-11,
+    .col-sm-12 {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .col-md-1,
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-6,
+    .col-md-7,
+    .col-md-8,
+    .col-md-9,
+    .col-md-10,
+    .col-md-11,
+    .col-md-12 {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+@media (min-width: 992px) {
+
+    .col-lg-1,
+    .col-lg-2,
+    .col-lg-3,
+    .col-lg-4,
+    .col-lg-5,
+    .col-lg-6,
+    .col-lg-7,
+    .col-lg-8,
+    .col-lg-9,
+    .col-lg-10,
+    .col-lg-11,
+    .col-lg-12 {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .col-xl-1,
+    .col-xl-2,
+    .col-xl-3,
+    .col-xl-4,
+    .col-xl-5,
+    .col-xl-6,
+    .col-xl-7,
+    .col-xl-8,
+    .col-xl-9,
+    .col-xl-10,
+    .col-xl-11,
+    .col-xl-12 {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+.mw-100 {
+    max-width: 100% !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+.child_card{
+    background-color: #f6f7f7 !important;
+    border: 1px solid #dddddd !important;
+    border-radius: 5px !important;
+    box-shadow: unset !important;
+    margin-bottom: 15px !important;
+    padding: 15px !important;
+}
+.webmasterpro-update-info-message{
+    background: #04d00180;
+    color: white;
+    font-size: 14px;
+    padding: 6px 18px;
+    display: inline;
+    border-radius: 4px;
+}
