@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  */
 if (!defined('WEBMASTERPRO_VERSION')) {
 	// Replace the version number of the plugin with a date, like YYYYMMDD to bust cache
-	define('WEBMASTERPRO_VERSION', '0.0.1');
+	define('WEBMASTERPRO_VERSION', '1.0.0');
 }
 if (!defined('WEBMASTERPRO_PATH')) {
 	define('WEBMASTERPRO_PATH', plugin_dir_path(__FILE__));
