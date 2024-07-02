@@ -62,6 +62,7 @@ if (isset($_POST['update_plugin'])) {
     if ($update_result === true) {
         set_transient('cxdc_webmaster_pro_update_notice', 'success', 30); // Set to expire in 30 seconds
         error_log('Plugin updated successfully-update page.');
+        wp_redirect(admin_url('admin.php?page=webmasterpro-license-and-updates'));
     } else {
         set_transient('cxdc_webmaster_pro_update_notice', 'failed', 30); // Set to expire in 30 seconds
     }
