@@ -7,7 +7,7 @@ function cxdc_webmaster_pro_license_and_updates_page()
     $has_update = $update_info['has_update'];
     $latest_version = isset($update_info['latest_version']) ? $update_info['latest_version'] : 'Unknown';
 ?>
-    <div class="webmasterpro-wrap">
+    <div class="webmasterpro-wrap wrap">
         <div class="container">
             <div class="card">
                 <div class="card-header">
