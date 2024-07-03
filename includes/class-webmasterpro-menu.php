@@ -1,4 +1,5 @@
 <?php
+
 class Webmasterpro_Menu extends Webmasterpro_Admin
 {
 
@@ -26,200 +27,178 @@ class Webmasterpro_Menu extends Webmasterpro_Admin
 
     public function register_submenus()
     {
-        // SMTP Settings submenu
-        add_submenu_page(
-            'webmasterpro',                // Parent menu slug
-            'SMTP Settings',               // Page title
-            'SMTP Settings',               // Menu title
-            'manage_options',              // Capability required to access menu
-            'webmasterpro-smtp-settings',  // Menu slug
-            array($this, 'cxdc_webmasterpro_smtp_settings_page')  // Callback function to render the submenu page
-        );
+        // Array of submenus to register
+        $submenus = [
+            [
+                'title' => 'SMTP Settings',
+                'slug' => 'webmasterpro-smtp-settings',
+                'callback' => 'cxdc_webmasterpro_smtp_settings_page',
+                'class' => 'Webmasterpro_Smtp_Settings',
+                'file' => 'class-cxdc-smtp-settings-page.php'
+            ],
+            [
+                'title' => 'Shortcodes',
+                'slug' => 'webmasterpro-shortcodes',
+                'callback' => 'cxdc_webmasterpro_shortcodes_page',
+                'class' => 'WebMasterPro_Shortcodes',
+                'file' => 'class-cxdc-shortcodes-page.php'
+            ],
+            [
+                'title' => 'SEO Settings',
+                'slug' => 'webmasterpro-seo-settings',
+                'callback' => 'cxdc_webmasterpro_seo_settings_page',
+                'class' => 'Webmasterpro_Seo_Settings',
+                'file' => 'class-cxdc-seo-settings-page.php'
+            ],
+            [
+                'title' => 'Customizations',
+                'slug' => 'webmasterpro-customizations',
+                'callback' => 'cxdc_webmasterpro_customization_page',
+                'class' => 'WebMasterPro_Customization',
+                'file' => 'class-cxdc-customizations-page.php'
+            ],
+            [
+                'title' => 'Optimizations',
+                'slug' => 'webmasterpro-optimizations',
+                'callback' => 'cxdc_webmasterpro_optimizations_page',
+                'class' => 'Webmasterpro_Optimizations',
+                'file' => 'class-cxdc-optimizations-page.php'
+            ],
+            [
+                'title' => 'CF7 Submissions',
+                'slug' => 'webmasterpro-cf7-submissions',
+                'callback' => 'cxdc_webmasterpro_cf7_submissions_page',
+                'class' => 'Webmasterpro_Cf7db',
+                'file' => 'class-cxdc-cf7db-page.php'
+            ],
+            [
+                'title' => 'Logs & Activity',
+                'slug' => 'webmasterpro-logs',
+                'callback' => 'cxdc_webmasterpro_logs_page',
+                'class' => 'Webmasterpro_Logs_and_activity',
+                'file' => 'class-cxdc-logs-and-activity-page.php'
+            ],
+            [
+                'title' => 'WMPro Security',
+                'slug' => 'webmasterpro-security',
+                'callback' => 'cxdc_webmasterpro_security_page',
+                'class' => 'Webmasterpro_Security',
+                'file' => 'class-cxdc-webmasterpro-security.php'
+            ],
+            [
+                'title' => 'WMPro Settings',
+                'slug' => 'webmasterpro-settings',
+                'callback' => 'cxdc_webmasterpro_settings_page',
+                'class' => 'Webmasterpro_Settings',
+                'file' => 'class-cxdc-webmasterpro-settings.php'
+            ],
+            [
+                'title' => 'License & Updates',
+                'slug' => 'webmasterpro-license-and-updates',
+                'callback' => 'cxdc_webmasterpro_license_and_updates_page',
+                'class' => 'Webmasterpro_License_and_Updates',
+                'file' => 'class-cxdc-license-and-updates-page.php'
+            ]
+        ];
 
-        // Shortcodes submenu
-        add_submenu_page(
-            'webmasterpro',                // Parent menu slug
-            'Shortcodes',                  // Page title
-            'Shortcodes',                  // Menu title
-            'manage_options',              // Capability required to access menu
-            'webmasterpro-shortcodes',     // Menu slug
-            array($this, 'cxdc_webmasterpro_shortcodes_page')  // Callback function to render the submenu page
-        );
-
-        // SEO Settings submenu
-        add_submenu_page(
-            'webmasterpro',                        // Parent menu slug
-            'SEO Settings',                        // Page title
-            'SEO Settings',                        // Menu title
-            'manage_options',                      // Capability required to access menu
-            'webmasterpro-seo-settings',           // Menu slug
-            array($this, 'cxdc_webmasterpro_seo_settings_page')  // Callback function to render the submenu page
-        );
-        // Customization submenu
-        add_submenu_page(
-            'webmasterpro',                // Parent menu slug
-            'Customizations',               // Page title
-            'Customizations',               // Menu title
-            'manage_options',              // Capability required to access menu
-            'webmasterpro-customizations',  // Menu slug
-            array($this, 'cxdc_webmasterpro_customization_page')  // Callback function to render the submenu page
-        );
-        // Optimizations submenu
-        add_submenu_page(
-            'webmasterpro',                        // Parent menu slug
-            'Optimizations',                       // Page title
-            'Optimizations',                       // Menu title
-            'manage_options',                      // Capability required to access menu
-            'webmasterpro-optimizations',          // Menu slug
-            array($this, 'cxdc_webmasterpro_optimizations_page')  // Callback function to render the submenu page
-        );
-
-        // CF7 Submissions submenu
-        add_submenu_page(
-            'webmasterpro',                        // Parent menu slug
-            'CF7 Submissions',                     // Page title
-            'CF7 Submissions',                     // Menu title
-            'manage_options',                      // Capability required to access menu
-            'webmasterpro-cf7-submissions',        // Menu slug
-            array($this, 'cxdc_webmasterpro_cf7_submissions_page')  // Callback function to render the submenu page
-        );
-
-        // Logs & Activity submenu
-        add_submenu_page(
-            'webmasterpro',                        // Parent menu slug
-            'Logs & Activity',                     // Page title
-            'Logs & Activity',                     // Menu title
-            'manage_options',                      // Capability required to access menu
-            'webmasterpro-logs',                   // Menu slug
-            array($this, 'cxdc_webmasterpro_logs_page')  // Callback function to render the submenu page
-        );
-        // Security submenu
-        add_submenu_page(
-            'webmasterpro',                // Parent menu slug
-            'WebMasterPro Security',                    // Page title
-            'WMPro Security',                    // Menu title
-            'manage_options',              // Capability required to access menu
-            'webmasterpro-security',       // Menu slug
-            array($this, 'cxdc_webmasterpro_security_page')  // Callback function to render the submenu page
-        );
-
-        // Settings submenu
-        add_submenu_page(
-            'webmasterpro',                // Parent menu slug
-            'WebMasterPro Settings',        // Page title
-            'WMPro Settings',                 // Menu title
-            'manage_options',              // Capability required to access menu
-            'webmasterpro-settings',       // Menu slug
-            array($this, 'cxdc_webmasterpro_settings_page')  // Callback function to render the submenu page
-        );
-        // CXDC Backup submenu
-        // add_submenu_page(
-        //     'webmasterpro',                        // Parent menu slug
-        //     'WebMasterPro Backup',                         // Page title
-        //     'WMPro Backup',                         // Menu title
-        //     'manage_options',                      // Capability required to access menu
-        //     'webmasterpro-cxdc-backup',            // Menu slug
-        //     array($this, 'cxdc_webmasterpro_cxdc_backup_page')  // Callback function to render the submenu page
-        // );
-        // License and Updates submenu
-        add_submenu_page(
-            'webmasterpro',                        // Parent menu slug
-            'License & Updates',                 // Page title
-            'License & Updates',                 // Menu title
-            'manage_options',                      // Capability required to access menu
-            'webmasterpro-license-and-updates',    // Menu slug
-            array($this, 'cxdc_webmasterpro_license_and_updates_page')  // Callback function to render the submenu page
-        );
-
-        // Add more submenus here as needed
+        // Loop through each submenu and register it
+        foreach ($submenus as $submenu) {
+            add_submenu_page(
+                'webmasterpro',                // Parent menu slug
+                $submenu['title'],             // Page title
+                $submenu['title'],             // Menu title
+                'manage_options',              // Capability required to access menu
+                $submenu['slug'],              // Menu slug
+                array($this, $submenu['callback']) // Callback function to render the submenu page
+            );
+        }
     }
 
     // Callback function to display content for WebMasterPro dashboard page
     public function cxdc_webmasterpro_dashboard_page()
     {
-        if (!current_user_can('manage_options')) {
-            return;
-        }
-        // Include the dashboard page template
-        require_once WEBMASTERPRO_PLUGIN_DIR . 'admin/partials/admin-dashboard-page.php';
-        $dashboard = new Webmasterpro_Dashboard();
-        $dashboard->webmasterpro_dashboard_page();
+        $this->load_page('webmasterpro-dashboard-page.php', 'Webmasterpro_Dashboard', 'webmasterpro_dashboard_page');
     }
 
     // Callback function to display content for WebMasterPro SMTP settings page
     public function cxdc_webmasterpro_smtp_settings_page()
     {
-        if (!current_user_can('manage_options')) {
-            return;
-        }
-        // Include the SMTP settings page template
-        require_once WEBMASTERPRO_PLUGIN_DIR . 'admin/pages/class-cxdc-smtp-settings-page.php';
-        $smtp_settings = new Webmasterpro_Smtp_Settings();
-        $smtp_settings->cxdc_webmaster_pro_smtp_settings_page();
+        $this->load_page('class-cxdc-smtp-settings-page.php', 'Webmasterpro_Smtp_Settings', 'cxdc_webmaster_pro_smtp_settings_page');
     }
 
     // Callback function to display content for WebMasterPro shortcodes page
     public function cxdc_webmasterpro_shortcodes_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro Shortcodes</h1></div>';
+        $this->load_page('class-cxdc-shortcodes-page.php', 'WebMasterPro_Shortcodes', 'webmasterpro_shortcodes_page');
     }
 
     // Callback function to display content for WebMasterPro security page
     public function cxdc_webmasterpro_security_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro Security</h1></div>';
+        $this->load_page('class-cxdc-webmasterpro-security.php', 'Webmasterpro_Security', 'cxdc_webmaster_pro_security_page');
     }
 
     // Callback function to display content for WebMasterPro customization page
     public function cxdc_webmasterpro_customization_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro Customization</h1></div>';
+        $this->load_page('class-cxdc-customizations-page.php', 'WebMasterPro_Customization', 'render_customization_page');
     }
 
     // Callback function to display content for WebMasterPro settings page
     public function cxdc_webmasterpro_settings_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro Settings</h1></div>';
+        $this->load_page('class-cxdc-webmasterpro-settings.php', 'Webmasterpro_Settings', 'cxdc_webmaster_pro_settings_page');
     }
 
     // Callback function to display content for WebMasterPro CF7 submissions page
     public function cxdc_webmasterpro_cf7_submissions_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro CF7 Submissions</h1></div>';
+        $this->load_page('class-cxdc-cf7db-page.php', 'Webmasterpro_Cf7db', 'cxdc_webmaster_pro_cf7db_page');
     }
 
     // Callback function to display content for WebMasterPro logs & activity page
     public function cxdc_webmasterpro_logs_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro Logs & Activity</h1></div>';
+        $this->load_page('class-cxdc-logs-and-activity-page.php', 'Webmasterpro_Logs_and_activity', 'cxdc_webmaster_pro_logs_and_activity_page');
     }
 
     // Callback function to display content for WebMasterPro SEO settings page
     public function cxdc_webmasterpro_seo_settings_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro SEO Settings</h1></div>';
-    }
-
-    // Callback function to display content for WebMasterPro CXDC Backup page
-    public function cxdc_webmasterpro_cxdc_backup_page()
-    {
-        echo '<div class="wrap"><h1>WebMasterPro CXDC Backup</h1></div>';
+        $this->load_page('class-cxdc-seo-settings-page.php', 'Webmasterpro_Seo_Settings', 'cxdc_webmaster_pro_seo_settings_page');
     }
 
     // Callback function to display content for WebMasterPro optimizations page
     public function cxdc_webmasterpro_optimizations_page()
     {
-        echo '<div class="wrap"><h1>WebMasterPro Optimizations</h1></div>';
+        $this->load_page('class-cxdc-optimizations-page.php', 'Webmasterpro_Optimizations', 'cxdc_webmaster_pro_optimizations_page');
     }
 
     // Callback function to display content for WebMasterPro license and updates page
     public function cxdc_webmasterpro_license_and_updates_page()
     {
+        $this->load_page('class-cxdc-license-and-updates-page.php', 'Webmasterpro_License_and_Updates', 'cxdc_webmaster_pro_license_and_updates_page');
+    }
+
+    // Function to load the page class and call its method dynamically
+    private function load_page($file, $class, $method)
+    {
         if (!current_user_can('manage_options')) {
-            return;
+            wp_die(__('You do not have sufficient permissions to access this page.'));
         }
-        // Include the license and updates page template
-        require_once WEBMASTERPRO_PLUGIN_DIR . 'admin/pages/class-cxdc-license-and-updates-page.php';
+
+        require_once WEBMASTERPRO_PLUGIN_DIR . 'admin/pages/' . $file;
+
+        if (class_exists($class)) {
+            $page_instance = new $class();
+            if (method_exists($page_instance, $method)) {
+                $page_instance->$method();
+            } else {
+                echo '<p>Method ' . esc_html($method) . ' does not exist in class ' . esc_html($class) . '.</p>';
+            }
+        } else {
+            echo '<p>Class ' . esc_html($class) . ' not found.</p>';
+        }
     }
 }
 

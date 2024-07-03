@@ -123,6 +123,7 @@ class Webmasterpro {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-webmasterpro-public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-webmasterpro-menu.php';
 		$this->loader = new Webmasterpro_Loader();
+		
 
 	}
 

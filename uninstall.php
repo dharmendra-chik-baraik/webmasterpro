@@ -45,4 +45,12 @@ if (get_option($opt6) !== false) {
 	delete_option($opt6);
 }
 
+if (get_option('webmasterpro_custom_script_settings')) {
+	delete_option('webmasterpro_custom_script_settings');
+}
+
+if (get_option('webmasterpro_custom_style_settings')) {
+	delete_option('webmasterpro_custom_style_settings');	
+}
+
 // No explicit return or exit to maintain flow.

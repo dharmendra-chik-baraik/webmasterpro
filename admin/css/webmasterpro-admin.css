@@ -22,12 +22,22 @@
 .webmasterpro-admin h2 {
     font-size: 22px !important;
 }
-
+.input_bg {
+    background-color: #f6f7f7 !important;
+}
+.wp-picker-container {
+    display: inline-block;
+    top: -6px;
+    position: relative;
+}
+.wp-picker-container .iris-picker{
+    margin-top: 0 !important;
+}
 .webmasterpro-admin .postbox .inside h2,
 .webmasterpro-admin .wrap [class$=icon32]+h2,
 .webmasterpro-admin .wrap h1,
 .webmasterpro-admin .wrap>h2:first-child {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
 }
 

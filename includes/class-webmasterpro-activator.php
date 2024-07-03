@@ -36,7 +36,7 @@ class Webmasterpro_Activator
 		global $wpdb;
 
 		// Create table for activity logs
-		$table_name_logs = $wpdb->prefix . 'cxdcwmpro_activity_logs';
+		$table_name_logs = $wpdb->prefix . 'cxdcwmpro_users_logs';
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql_logs = "CREATE TABLE $table_name_logs (
