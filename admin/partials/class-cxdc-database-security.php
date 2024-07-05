@@ -94,112 +94,79 @@ class Webmasterpro_Database_Security
 <?php
     }
 
-/**
- * Rename WordPress database tables and update configuration with a new prefix.
- *
- * @param string $newPrefix The new prefix to be assigned to the tables.
- * @return mixed WP_Error on failure, or a success message on completion.
- */
-private function change_database_prefix($newPrefix)
-{
-    global $wpdb;
+    /**
+     * Rename WordPress database tables and update configuration with a new prefix.
+     *
+     * @param string $newPrefix The new prefix to be assigned to the tables.
+     * @return mixed WP_Error on failure, or a success message on completion.
+     */
+    private function change_database_prefix($newPrefix)
+    {
+        global $wpdb;
 
-    $oldPrefix = $wpdb->prefix;
+        $oldPrefix = strtolower($wpdb->prefix); // Convert to lowercase for case-insensitive comparison
+        $newPrefix = strtolower($newPrefix); // Convert to lowercase for consistency
 
-    // Validate new prefix format
-    if (!preg_match('/^[A-Za-z0-9_]+$/', $newPrefix)) {
-        return new WP_Error('invalid_prefix', __('Invalid prefix format. Only alphanumeric characters and underscores are allowed.'));
-    }
+        error_log("Old prefix: " . $oldPrefix . " New prefix: " . $newPrefix);
 
-    // Log the old and new prefixes
-    error_log("Changing database prefix from '{$oldPrefix}' to '{$newPrefix}'.");
-
-    // Get tables with the old prefix
-    $tables = $wpdb->get_results("SHOW TABLES LIKE '{$oldPrefix}%'");
-    if ($wpdb->last_error) {
-        return new WP_Error('database_error', __('Error retrieving table list from the database: ') . $wpdb->last_error);
-    }
-
-    // Log the tables for debugging purposes
-    error_log("Tables to rename: " . print_r($tables, true));
-
-    // Iterate over each table and rename if a table with the new name doesn't exist
-    foreach ($tables as $table) {
-        // Extract the table name from the stdClass object
-        $table_array = (array) $table; // Cast the object to an array
-        $oldTableName = reset($table_array); // Get the first element of the array
-    
-        // Generate the new table name with the updated prefix
-        $newTableName = preg_replace('/^' . preg_quote($oldPrefix, '/') . '/', $newPrefix, $oldTableName);
-    
-        // Rename the table, regardless of whether the new table already exists
-        $rename_query = "RENAME TABLE `{$oldTableName}` TO `{$newTableName}`";
-        $wpdb->query($rename_query);
+        // Update table names
+        $tables = $wpdb->get_results("SHOW TABLES LIKE '{$oldPrefix}%'");
         if ($wpdb->last_error) {
-            error_log("WordPress database error {$wpdb->last_error} for query RENAME TABLE {$oldTableName} TO {$newTableName}");
-            return new WP_Error('database_error', __('Error renaming table ') . $oldTableName . __(': ') . $wpdb->last_error);
+            return new WP_Error('database_error', __('Error retrieving table list from the database: ') . $wpdb->last_error);
         }
-    
-        // Verify the new table exists
-        $new_table_check = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $newTableName));
-        if (!$new_table_check) {
-            error_log("Failed to find the new table {$newTableName} after renaming.");
-            return new WP_Error('database_error', __('Failed to verify existence of the new table after renaming: ') . $newTableName);
+
+        foreach ($tables as $table) {
+            $oldTableName = current($table);
+            error_log("Old table name: " . $oldTableName);
+
+            // Convert table name to lowercase for consistent comparison
+            $currentTableName = strtolower($oldTableName);
+
+            // Check if the table name contains the old prefix anywhere (case-insensitive)
+            if (strpos($currentTableName, $oldPrefix) === 0) {
+                // Replace old prefix with new prefix in table name
+                $newTableName = $newPrefix . substr($oldTableName, strlen($oldPrefix));
+                error_log("New table name: " . $newTableName);
+
+                // Rename the table with the new name
+                $wpdb->query("RENAME TABLE {$oldTableName} TO {$newTableName}");
+                if ($wpdb->last_error) {
+                    return new WP_Error('database_error', __('Error renaming table ') . $oldTableName . __(': ') . $wpdb->last_error);
+                }
+            } else {
+                error_log("Table name '{$oldTableName}' does not start with '{$oldPrefix}', skipping.");
+            }
+        }
+
+        // Update options table
+        $options_query = $wpdb->prepare("UPDATE {$newPrefix}options SET option_name = %s WHERE option_name = %s", $newPrefix . 'user_roles', $oldPrefix . 'user_roles');
+        $wpdb->query($options_query);
+        if ($wpdb->last_error) {
+            return new WP_Error('database_error', __('Error updating options table: ') . $wpdb->last_error);
+        }
+
+        // Update usermeta table
+        $usermeta_query = $wpdb->prepare("UPDATE {$newPrefix}usermeta SET meta_key = REPLACE(meta_key, %s, %s) WHERE meta_key LIKE %s", $oldPrefix, $newPrefix, $oldPrefix . '%');
+        $wpdb->query($usermeta_query);
+        if ($wpdb->last_error) {
+            return new WP_Error('database_error', __('Error updating usermeta table: ') . $wpdb->last_error);
+        }
+
+        // Update wp-config.php
+        // Update prefix in wp-config.php
+        $config_path = ABSPATH . 'wp-config.php';
+
+        if (file_exists($config_path)) {
+            $config_content = file_get_contents($config_path);
+            $config_content = preg_replace("/\\\$table_prefix\\s*=\\s*[\"'].*?[\"'];/i", "\$table_prefix = '{$newPrefix}';", $config_content);
+            file_put_contents($config_path, $config_content);
         } else {
-            // Log success for renaming
-            error_log("Successfully renamed {$oldTableName} to {$newTableName}.");
+            return new WP_Error('config_file_error', __('wp-config.php file not found.'));
         }
+
+        // Update the global $table_prefix variable
+        $wpdb->set_prefix($newPrefix);
+
+        return __('Database prefix changed successfully.', 'text-domain');
     }
-    
-    
-
-    // Verify the existence of critical tables before proceeding with updates
-    $newOptionsTable = "{$newPrefix}options";
-    $newUsermetaTable = "{$newPrefix}usermeta";
-
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $newOptionsTable)) != $newOptionsTable) {
-        return new WP_Error('database_error', __('New options table does not exist: ') . $newOptionsTable);
-    }
-
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $newUsermetaTable)) != $newUsermetaTable) {
-        return new WP_Error('database_error', __('New usermeta table does not exist: ') . $newUsermetaTable);
-    }
-
-    // Update options table prefix in the new options table
-    $options_query = $wpdb->prepare("UPDATE `{$newOptionsTable}` SET option_name = %s WHERE option_name = %s", $newPrefix . 'user_roles', $oldPrefix . 'user_roles');
-    $wpdb->query($options_query);
-    if ($wpdb->last_error) {
-        error_log("WordPress database error {$wpdb->last_error} for query {$options_query}");
-        return new WP_Error('database_error', __('Error updating options table: ') . $wpdb->last_error);
-    }
-
-    // Update usermeta table prefix in the new usermeta table
-    $usermeta_query = $wpdb->prepare("UPDATE `{$newUsermetaTable}` SET meta_key = REPLACE(meta_key, %s, %s) WHERE meta_key LIKE %s", $oldPrefix, $newPrefix, $oldPrefix . '%');
-    $wpdb->query($usermeta_query);
-    if ($wpdb->last_error) {
-        error_log("WordPress database error {$wpdb->last_error} for query {$usermeta_query}");
-        return new WP_Error('database_error', __('Error updating usermeta table: ') . $wpdb->last_error);
-    }
-
-    // Update wp-config.php with the new prefix
-    $config_path = ABSPATH . 'wp-config.php';
-
-    if (file_exists($config_path) && is_writable($config_path)) {
-        $config_content = file_get_contents($config_path);
-        $config_content = preg_replace("/\\\$table_prefix\\s*=\\s*[\"'].*?[\"'];/i", "\$table_prefix = '{$newPrefix}';", $config_content);
-        if (file_put_contents($config_path, $config_content) === false) {
-            return new WP_Error('config_file_error', __('Failed to write to wp-config.php file.'));
-        }
-    } else {
-        return new WP_Error('config_file_error', __('wp-config.php file not found or not writable.'));
-    }
-
-    // Update the global $table_prefix variable
-    $wpdb->set_prefix($newPrefix);
-
-    return __('Database prefix changed successfully.', 'text-domain');
-}
-
-
-
 }
