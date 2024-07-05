@@ -53,14 +53,14 @@ class Webmasterpro_Admin
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		
+
 		// Register hooks for styles and scripts
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_styles'));
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 
 		// Register hook for PHPMailer initialization
 		add_action('phpmailer_init', array($this, 'cxdc_webmaster_pro_phpmailer_init'));
-		
+
 		// Schedule and validate license hooks
 		add_action('wp', array($this, 'schedule_daily_license_validation'));
 		add_action('wp_login', array($this, 'cxdc_webmaster_pro_validate_license'));
@@ -94,27 +94,29 @@ class Webmasterpro_Admin
 	 * @since    1.0.0
 	 * @param    PHPMailer    $phpmailer    The PHPMailer instance.
 	 */
-	public function cxdc_webmaster_pro_phpmailer_init($phpmailer) {
-        $smtp_settings = get_option('cxdc_webmaster_pro_smtp_settings');
+	public function cxdc_webmaster_pro_phpmailer_init($phpmailer)
+	{
+		$phpmailer->isSMTP();
+		// SMTP configuration settings
+		$smtp_settings = get_option('cxdc_webmaster_pro_smtp_settings');
+		$phpmailer->Host = $smtp_settings['host'];
+		$phpmailer->Port = $smtp_settings['port'];
+		$phpmailer->SMTPAuth = true;
+		$phpmailer->Username = $smtp_settings['username'];
+		$phpmailer->Password = $smtp_settings['password'];
+		$phpmailer->SMTPSecure = $smtp_settings['encryption'];
 
-        if (!empty($smtp_settings['host']) && !empty($smtp_settings['username']) && !empty($smtp_settings['password'])) {
-            $phpmailer->isSMTP();
-            $phpmailer->Host = $smtp_settings['host'];
-            $phpmailer->SMTPAuth = true;
-            $phpmailer->Port = $smtp_settings['port'];
-            $phpmailer->Username = $smtp_settings['username'];
-            $phpmailer->Password = $smtp_settings['password'];
-            $phpmailer->SMTPSecure = $smtp_settings['encryption'];
+		// From email settings
+		$phpmailer->setFrom($smtp_settings['from_email'], $smtp_settings['from_name']);
 
-            $phpmailer->From = $smtp_settings['from_email'];
-            $phpmailer->FromName = $smtp_settings['from_name'];
-			
-			$phpmailer->SMTPDebug = 2;
-			$phpmailer->Debugoutput = function($str, $level) {
-				error_log($str);
-			};
-        }
-    }
+		// Enable debugging
+		$phpmailer->SMTPDebug = 2;
+		$phpmailer->Debugoutput = function ($str, $level) use (&$debug_messages) {
+			$debug_messages[] = 'Email sending logs: ' . $str . ' - Level: ' . $level;
+			set_transient('cxdc_webmaster_pro_phpmailer_logs', $debug_messages, HOUR_IN_SECONDS); // Expires in 1 hour
+			error_log('Email sending logs: ' . $str . ' - Level: ' . $level);
+		};
+	}
 
 	/**
 	 * Schedule a daily event to validate the license.
@@ -133,9 +135,10 @@ class Webmasterpro_Admin
 	 *
 	 * @since    1.0.0
 	 */
-	public function cxdc_webmaster_pro_validate_license() {
+	public function cxdc_webmaster_pro_validate_license()
+	{
 		$stored_license_key = get_option('cxdc_webmaster_pro_license_key');
-		
+
 		if (!empty($stored_license_key)) {
 			$validation_api_url = WEBMASTERPRO_PLUGIN_URL . '/licenses/validate';
 

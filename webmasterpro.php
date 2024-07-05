@@ -95,6 +95,7 @@ register_deactivation_hook(__FILE__, 'deactivate_webmasterpro');
 require plugin_dir_path(__FILE__) . 'includes/class-webmasterpro.php';
 require plugin_dir_path(__FILE__) . 'admin/pages/class-cxdc-shortcodes-page.php';
 require plugin_dir_path(__FILE__) . 'admin/partials/webmasterpro-admin-actions.php';
+require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-general-security.php';
 
 
 /**
@@ -414,6 +415,5 @@ function cyberxdc_webmasterpro_enqueue_custom_scripts()
 }
 
 add_action('wp_enqueue_scripts', 'cyberxdc_webmasterpro_enqueue_custom_scripts');
-
 
 

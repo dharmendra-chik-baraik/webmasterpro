@@ -19,6 +19,47 @@
     color: #06D001 !important;
 }
 
+.webmasterpro-admin .is-dismissible {
+    border-left-color: #06D001 !important;
+    width: 50%;
+    margin: 0px;
+    position: absolute !important;
+    right: 30px;
+    top: 16px;
+}
+.webmasterpro-custom-warning-box {
+    background-color: #fff7e6; /* Light yellow background */
+    border-left: 4px solid #f0ad4e; /* Orange border on the left */
+    color: #8a6d3b; /* Darker text color */
+    border-top: 1px solid #f0ad4e;
+    border-right: 1px solid #f0ad4e;
+    border-bottom: 1px solid #f0ad4e;
+    margin-bottom: 15px;
+    padding: 8px 18px;
+}
+
+.webmasterpro-custom-warning-box{
+    background-color: #e7f5ff; /* Light yellow background */
+    border-left: 4px solid #5bc0de; /* Orange border on the left */
+    color: #31708f; /* Darker text color */
+    border-top: 1px solid #5bc0de;
+    border-right: 1px solid #5bc0de;
+    border-bottom: 1px solid #5bc0de;
+    margin-bottom: 15px;
+    padding: 8px 18px;
+}
+.webmasterpro-custom-success-box {
+    background-color: #dff0d8; /* Light green background */
+    border-left: 4px solid #5cb85c; /* Green border on the left */
+    color: #3c763d; /* Darker text color */
+    border-top: 1px solid #5cb85c;
+    border-right: 1px solid #5cb85c;
+    border-bottom: 1px solid #5cb85c;
+    margin-bottom: 15px;
+    padding: 8px 18px;
+}
+
+
 .webmasterpro-admin h2 {
     font-size: 22px !important;
 }
