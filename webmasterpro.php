@@ -96,6 +96,9 @@ require plugin_dir_path(__FILE__) . 'includes/class-webmasterpro.php';
 require plugin_dir_path(__FILE__) . 'admin/pages/class-cxdc-shortcodes-page.php';
 require plugin_dir_path(__FILE__) . 'admin/partials/webmasterpro-admin-actions.php';
 require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-general-security.php';
+require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-database-security.php';
+require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-firewalls-rules.php';
+require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-two-factor-auth.php';
 
 
 /**
@@ -114,6 +117,7 @@ function run_webmasterpro()
     $plugin->run();
 }
 run_webmasterpro();
+
 
 add_action('admin_footer', 'initialize_color_picker');
 function initialize_color_picker() {

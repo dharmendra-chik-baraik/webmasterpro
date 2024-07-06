@@ -58,6 +58,30 @@
     margin-bottom: 15px;
     padding: 8px 18px;
 }
+.custom-notice-success {
+    border-color: #5cb85c !important;
+    color: #5cb85c;
+}
+/* Custom Notice Styles */
+.custom-notice {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.custom-notice-info {
+    background-color: #f0f0f5;
+    border-color: #d0d0e1;
+    color: #333;
+}
+
+.custom-notice-warning {
+    background-color: #fef4f4;
+    border-color: #f6c6c6;
+    color: #721c24;
+}
+
 
 
 .webmasterpro-admin h2 {
@@ -229,4 +253,10 @@
     padding: 6px 18px;
     display: inline;
     border-radius: 4px;
+}
+.form-group {
+    background: #f6f7f7;
+    padding: 6px;
+    margin: 22px 0px;
+    border-radius: 6px;
 }

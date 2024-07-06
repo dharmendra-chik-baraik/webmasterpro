@@ -218,6 +218,8 @@ class Webmasterpro {
 
 }
 
+
+
 function cyberxdc_webmaster_pro_get_latest_version_from_github() {
     // Get options for repo owner, repo name, and branch/tag
     $repo_owner = get_option('cxdc_webmaster_pro_plugin_repo_owner');

@@ -180,7 +180,6 @@ class Webmasterpro_General_Security
                     } else {
                         $notice = 'Username changed successfully.';
                     }
-                    
                 }
             } else {
                 $notice = 'Invalid input.';
@@ -234,34 +233,44 @@ class Webmasterpro_General_Security
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                        <div style="max-width: 100%; width: 100%;" class="card">
-                            <h3>Change Your Username</h3>
-                            <?php if (is_user_logged_in()) : ?>
-                                <?php $current_user = wp_get_current_user(); ?>
-                                <p>
-                                    Current Username: <strong><?php echo esc_html($current_user->user_login); ?></strong>
-                                </p>
-                                <table class="form-table">
-                                    <tr valign="top">
-                                        <th scope="row">New Username</th>
-                                        <td>
-                                            <input type="text" name="new_username" value="" />
-                                            <input type="hidden" name="user_id" value="<?php echo esc_attr($current_user->ID); ?>" />
-                                            <p class="description">Enter a new username.</p>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div class="">
-                                    <p class="webmasterpro-custom-info-box">
-                                        NOTE: If you are currently logged in as "admin" you will be automatically logged out after changing your username and will be required to log back in.
+                        <div class="row">
+                            <div class="card col">
+                                <h3>Change Your Username</h3>
+                                <?php if (is_user_logged_in()) : ?>
+                                    <?php $current_user = wp_get_current_user(); ?>
+                                    <p>
+                                        Current Username: <strong><?php echo esc_html($current_user->user_login); ?></strong>
                                     </p>
+                                    <table class="form-table">
+                                        <tr valign="top">
+                                            <th scope="row">New Username</th>
+                                            <td>
+                                                <input type="text" name="new_username" value="" />
+                                                <input type="hidden" name="user_id" value="<?php echo esc_attr($current_user->ID); ?>" />
+                                                <p class="description">Enter a new username.</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="">
+                                        <p class="webmasterpro-custom-info-box">
+                                            NOTE: If you are currently logged in as "admin" you will be automatically logged out after changing your username and will be required to log back in.
+                                        </p>
+                                    </div>
+                                    <br>
+                                    <?php wp_nonce_field('webmasterpro_user_security_nonce', 'webmasterpro_user_security_nonce'); ?>
+                                    <input type="submit" name="webmasterpro_user_security_submit" class="button-primary" value="Save Changes">
+                                <?php else : ?>
+                                    <p>You need to be logged in to change your username.</p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="card col">
+                                <h3>Important Notes</h3>
+                                <div class="custom-notice custom-notice-warning">
+                                    <p><strong>Security Reminder:</strong></p>
+                                    <p>1. Changing the "admin" username reduces the risk of unauthorized access. Always use strong, unique usernames and passwords to secure your site.</p>
+                                    <p>2. Limit administrator accounts to necessary personnel only to minimize security risks.</p>
                                 </div>
-                                <br>
-                                <?php wp_nonce_field('webmasterpro_user_security_nonce', 'webmasterpro_user_security_nonce'); ?>
-                                <input type="submit" name="webmasterpro_user_security_submit" class="button-primary" value="Save Changes">
-                            <?php else : ?>
-                                <p>You need to be logged in to change your username.</p>
-                            <?php endif; ?>
+                            </div>
                         </div>
                     </form>
                 </div>

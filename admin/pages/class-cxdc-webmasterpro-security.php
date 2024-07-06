@@ -1,6 +1,8 @@
 <?php
 require_once plugin_dir_path(__FILE__) . '../partials/class-cxdc-general-security.php';
 require_once plugin_dir_path(__FILE__) . '../partials/class-cxdc-database-security.php';
+require_once plugin_dir_path(__FILE__) . '../partials/class-cxdc-firewalls-rules.php';
+require_once plugin_dir_path(__FILE__) . '../partials/class-cxdc-two-factor-auth.php';
 class Webmasterpro_Security
 {
 
@@ -41,17 +43,20 @@ class Webmasterpro_Security
                         $webmaster_database_security->webmasterpro_database_security_page();
                         break;
                     case 'files_security':
-                        webmasterpro_files_security_page();
+                        $webmasterpro_files_security = new WebMasterPro_File_Security();
+                        $webmasterpro_files_security->webmasterpro_files_security_page();
                         break;
                     case 'firewalls':
-                        webmasterpro_firewalls_page();
+                        $webmasterpro_firewalls = new WebmasterproCXDC_Firewalls_Rules();
+                        $webmasterpro_firewalls->webmasterpro_firewalls_page();
                         break;
                     case 'two_factor':
-                        webmasterpro_two_factor_page();
+                        $webmasterpro_two_factor = new Webmasterpro_TwoFactorAuth();
+                        $webmasterpro_two_factor->webmasterpro_two_factor_auth_page();
                         break;
                     default:
-                        webmasterpro_general_security_page();
-                        break;
+                    Webmasterpro_General_Security::webmasterpro_general_security_page();
+                    break;
                 }
                 ?>
             </div>

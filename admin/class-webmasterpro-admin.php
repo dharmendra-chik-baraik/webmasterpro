@@ -114,7 +114,6 @@ class Webmasterpro_Admin
 		$phpmailer->Debugoutput = function ($str, $level) use (&$debug_messages) {
 			$debug_messages[] = 'Email sending logs: ' . $str . ' - Level: ' . $level;
 			set_transient('cxdc_webmaster_pro_phpmailer_logs', $debug_messages, HOUR_IN_SECONDS); // Expires in 1 hour
-			error_log('Email sending logs: ' . $str . ' - Level: ' . $level);
 		};
 	}
 
