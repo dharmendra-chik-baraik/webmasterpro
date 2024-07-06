@@ -99,6 +99,7 @@ require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-general-security.
 require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-database-security.php';
 require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-firewalls-rules.php';
 require plugin_dir_path(__FILE__) . 'admin/partials/class-cxdc-two-factor-auth.php';
+require plugin_dir_path(__FILE__) . 'admin/pages/class-cxdc-webmasterpro-settings.php';
 
 
 /**

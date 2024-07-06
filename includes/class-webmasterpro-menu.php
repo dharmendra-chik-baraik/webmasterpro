@@ -44,25 +44,11 @@ class Webmasterpro_Menu extends Webmasterpro_Admin
                 'file' => 'class-cxdc-shortcodes-page.php'
             ],
             [
-                'title' => 'SEO Settings',
-                'slug' => 'webmasterpro-seo-settings',
-                'callback' => 'cxdc_webmasterpro_seo_settings_page',
-                'class' => 'Webmasterpro_Seo_Settings',
-                'file' => 'class-cxdc-seo-settings-page.php'
-            ],
-            [
                 'title' => 'Customizations',
                 'slug' => 'webmasterpro-customizations',
                 'callback' => 'cxdc_webmasterpro_customization_page',
                 'class' => 'WebMasterPro_Customization',
                 'file' => 'class-cxdc-customizations-page.php'
-            ],
-            [
-                'title' => 'Optimizations',
-                'slug' => 'webmasterpro-optimizations',
-                'callback' => 'cxdc_webmasterpro_optimizations_page',
-                'class' => 'Webmasterpro_Optimizations',
-                'file' => 'class-cxdc-optimizations-page.php'
             ],
             [
                 'title' => 'CF7 Submissions',
@@ -160,18 +146,6 @@ class Webmasterpro_Menu extends Webmasterpro_Admin
     public function cxdc_webmasterpro_logs_page()
     {
         $this->load_page('class-cxdc-logs-and-activity-page.php', 'Webmasterpro_Logs_and_activity', 'cxdc_webmaster_pro_logs_and_activity_page');
-    }
-
-    // Callback function to display content for WebMasterPro SEO settings page
-    public function cxdc_webmasterpro_seo_settings_page()
-    {
-        $this->load_page('class-cxdc-seo-settings-page.php', 'Webmasterpro_Seo_Settings', 'cxdc_webmaster_pro_seo_settings_page');
-    }
-
-    // Callback function to display content for WebMasterPro optimizations page
-    public function cxdc_webmasterpro_optimizations_page()
-    {
-        $this->load_page('class-cxdc-optimizations-page.php', 'Webmasterpro_Optimizations', 'cxdc_webmaster_pro_optimizations_page');
     }
 
     // Callback function to display content for WebMasterPro license and updates page
