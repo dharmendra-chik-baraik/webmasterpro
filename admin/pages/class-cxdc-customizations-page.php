@@ -24,7 +24,7 @@ class WebMasterPro_Customization
             <div class="container">
                 <div class="card">
                     <h1>WebMasterPro Customizations</h1>
-                    <p>Select the tab you want to customize.</p>
+                    <p>Personalize your WordPress site with CyberXDC's extensive customization options. Effortlessly modify the login page, inject custom CSS into headers and footers, and integrate scripts for enhanced functionality. Whether you're rebranding or refining user experience, CyberXDC empowers you to showcase your unique identity with ease. Simplify site management and elevate aesthetics with customizable solutions designed to amplify your WordPress presence.</p>
                     <h2 class="nav-tab-wrapper">
                         <a href="<?php echo esc_url(admin_url('admin.php?page=webmasterpro-customizations&tab=login_page')); ?>" class="nav-tab <?php echo $active_tab == 'login_page' ? 'nav-tab-active' : ''; ?>">Login Page</a>
                         <a href="<?php echo esc_url(admin_url('admin.php?page=webmasterpro-customizations&tab=custom_style')); ?>" class="nav-tab <?php echo $active_tab == 'custom_style' ? 'nav-tab-active' : ''; ?>">Custom Style</a>

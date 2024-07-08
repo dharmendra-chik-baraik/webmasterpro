@@ -118,15 +118,17 @@ class Webmasterpro_Dashboard
                                         $days_remaining = 30 - floor((time() - $failed_date) / DAY_IN_SECONDS);
                                         if ($days_remaining > 0) {
                                     ?>
-                                            <p style="margin: 0px; padding: 12px;" class="update-message notice inline notice-error notice-alt">This plugin will be deactivated in <?php echo esc_html($days_remaining) . ' days.'; ?></p>
-                                        <?php
-                                        } else {
-                                        ?>
+                                            <p style="margin: 0px; padding: 12px;" class="update-message notice inline notice-error notice-alt">
+                                                Your plugin does not have a valid license key. Get a license from <a href="https://webmasterpro.com">WebMasterPro</a> and activate it to use the plugin permanently.
+                                                You have <?php echo esc_html($days_remaining); ?> days remaining in your trial period.
+                                            </p> <?php
+                                                } else {
+                                                    ?>
                                             <p style="margin: 0px; padding: 12px;" class="update-message notice inline notice-error notice-alt">This plugin will be deactivated soon.</p>
                                 <?php
+                                                }
+                                            }
                                         }
-                                    }
-                                }
                                 ?>
                             </div>
                         </div>

@@ -7,27 +7,27 @@ class Webmasterpro_TwoFactorAuth
 
     public function __construct()
     {
-        add_filter('authenticate', array($this, 'cyberxdc_verify_otp_or_secret_key_on_login'), 30, 3);
-        add_action('login_form', array($this, 'cyberxdc_add_otp_or_secret_key_field'));
+        add_filter('authenticate', array($this, 'webmasterpro_verify_otp_or_secret_key_on_login'), 30, 3);
+        add_action('login_form', array($this, 'webmasterpro_add_otp_or_secret_key_field'));
     }
 
     public function webmasterpro_two_factor_auth_page()
     {
         // Check if the form has been submitted
-        if (isset($_POST['cyberxdc_two_factor_settings_submit'])) {
+        if (isset($_POST['webmasterpro_two_factor_settings_submit'])) {
             // Verify nonce for security
-            if (!isset($_POST['cyberxdc_two_factor_settings_nonce']) || !wp_verify_nonce($_POST['cyberxdc_two_factor_settings_nonce'], 'cyberxdc_two_factor_settings_nonce')) {
+            if (!isset($_POST['webmasterpro_two_factor_settings_nonce']) || !wp_verify_nonce($_POST['webmasterpro_two_factor_settings_nonce'], 'webmasterpro_two_factor_settings_nonce')) {
                 wp_die('Nonce verification failed');
             }
 
             // Sanitize and update settings for 2FA
             $enable_two_factor = isset($_POST['enable_two_factor']) ? '1' : '0';
-            update_option('cyberxdc_enable_two_factor', $enable_two_factor);
+            update_option('webmasterpro_enable_two_factor', $enable_two_factor);
 
             // Generate a new secret key if 2FA is enabled
             if ($enable_two_factor === '1') {
                 $secret_key = $this->generate_secret_key();
-                update_option('cyberxdc_ga_secret', $secret_key);
+                update_option('webmasterpro_ga_secret', $secret_key);
             }
 
             // Display a notice message
@@ -35,11 +35,11 @@ class Webmasterpro_TwoFactorAuth
         }
 
         // Retrieve current settings for 2FA
-        $enable_two_factor = get_option('cyberxdc_enable_two_factor', '0');
-        $secret_key = get_option('cyberxdc_ga_secret', '');
+        $enable_two_factor = get_option('webmasterpro_enable_two_factor', '0');
+        $secret_key = get_option('webmasterpro_ga_secret', '');
 
 ?>
-        <div class="cyberxdc-wrap">
+        <div class="webmasterpro-wrap">
             <div class="container">
                 <div class="row">
                     <div class="col card">
@@ -58,7 +58,7 @@ class Webmasterpro_TwoFactorAuth
                                         <p class="description">Enable or disable two-factor authentication.</p>
                                     </td>
                                 </tr>
-                                <?php $this->cyberxdc_display_qr_code(); ?>
+                                <?php $this->webmasterpro_display_qr_code(); ?>
                                 <tr valign="top">
                                     <th scope="row">Download Authenticator App</th>
                                     <td>
@@ -67,8 +67,8 @@ class Webmasterpro_TwoFactorAuth
                                     </td>
                                 </tr>
                             </table>
-                            <?php wp_nonce_field('cyberxdc_two_factor_settings_nonce', 'cyberxdc_two_factor_settings_nonce'); ?>
-                            <input type="submit" name="cyberxdc_two_factor_settings_submit" class="button-primary" value="Save Changes">
+                            <?php wp_nonce_field('webmasterpro_two_factor_settings_nonce', 'webmasterpro_two_factor_settings_nonce'); ?>
+                            <input type="submit" name="webmasterpro_two_factor_settings_submit" class="button-primary" value="Save Changes">
                         </form>
                     </div>
                     <div class="col card">
@@ -98,16 +98,16 @@ class Webmasterpro_TwoFactorAuth
 <?php
     }
 
-    public function cyberxdc_display_qr_code()
+    public function webmasterpro_display_qr_code()
     {
-        if (get_option('cyberxdc_enable_two_factor', '0') === '1') {
+        if (get_option('webmasterpro_enable_two_factor', '0') === '1') {
             $ga = new PHPGangsta_GoogleAuthenticator();
-            $secret = get_option('cyberxdc_ga_secret');
+            $secret = get_option('webmasterpro_ga_secret');
 
             // If the secret is not already generated, generate it
             if (!$secret) {
                 $secret = $this->generate_secret_key();
-                update_option('cyberxdc_ga_secret', $secret);
+                update_option('webmasterpro_ga_secret', $secret);
             }
 
             $qrCodeUrl = $ga->getQRCodeGoogleUrl(get_bloginfo('name'), $secret);
@@ -127,17 +127,18 @@ class Webmasterpro_TwoFactorAuth
         return $ga->createSecret( $length = 64 );
     }
 
-    public function cyberxdc_verify_otp_or_secret_key_on_login($user, $username, $password)
+    public function webmasterpro_verify_otp_or_secret_key_on_login($user, $username, $password)
     {
-        if (get_option('cyberxdc_enable_two_factor', '0') === '1') {
+        if (get_option('webmasterpro_enable_two_factor', '0') === '1') {
             // Check if OTP or Secret Key is provided
+            $otp = '';
             if (isset($_POST['otp_code'])) {
                 $otp = $_POST['otp_code'];
             } else {
                 return new WP_Error('otp_required', __('An OTP or Secret Key is required to complete the login.'));
             }
     
-            $secret = get_option('cyberxdc_ga_secret');
+            $secret = get_option('webmasterpro_ga_secret');
             $ga = new PHPGangsta_GoogleAuthenticator();
     
             // Verify OTP or Secret Key
@@ -149,9 +150,9 @@ class Webmasterpro_TwoFactorAuth
     }
     
 
-    public function cyberxdc_add_otp_or_secret_key_field()
+    public function webmasterpro_add_otp_or_secret_key_field()
     {
-        if (get_option('cyberxdc_enable_two_factor', '0') === '1') {
+        if (get_option('webmasterpro_enable_two_factor', '0') === '1') {
             echo '<p>
                 <label for="otp_code">OTP Code or Secret Key<br />
                 <input type="text" name="otp_code" id="otp_code" class="input" size="20" /></label>
