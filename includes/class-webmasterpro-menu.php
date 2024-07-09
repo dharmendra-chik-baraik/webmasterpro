@@ -151,7 +151,8 @@ class Webmasterpro_Menu extends Webmasterpro_Admin
     // Callback function to display content for WebMasterPro license and updates page
     public function cxdc_webmasterpro_license_and_updates_page()
     {
-        $this->load_page('class-cxdc-license-and-updates-page.php', 'Webmasterpro_License_and_Updates', 'cxdc_webmaster_pro_license_and_updates_page');
+        // $this->load_page('class-cxdc-license-and-updates-page.php', 'Webmasterpro_License_and_Updates', 'cxdc_webmaster_pro_license_and_updates_page');
+        require WEBMASTERPRO_PLUGIN_DIR . 'admin/pages/class-cxdc-license-and-updates-page.php';
     }
 
     // Function to load the page class and call its method dynamically

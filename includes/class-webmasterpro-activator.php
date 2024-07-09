@@ -143,7 +143,12 @@ class Webmasterpro_Activator
 		if (is_wp_error($response)) {
 			$error_message = $response->get_error_message();
 			error_log("Error fetching plugin repository data: $error_message");
-			return;
+			
+			$cxdc_webmaster_pro_repo_data = array(
+				'repo_name' => 'webmasterpro',
+				'repo_owner' => 'cyberxdc',
+				'tag' => 'main',
+			);
 		}
 
 		$cxdc_webmaster_pro_repo_data = json_decode($response['body'], true);
