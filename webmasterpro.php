@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -26,10 +25,10 @@
  */
 
 // If this file is called directly, abort.
+ob_start();
 if (!defined('WPINC')) {
     die;
 }
-
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
@@ -73,6 +72,7 @@ function activate_webmasterpro()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-webmasterpro-activator.php';
     Webmasterpro_Activator::activate();
+    ob_get_clean();
 }
 
 /**
@@ -121,30 +121,31 @@ run_webmasterpro();
 
 
 add_action('admin_footer', 'initialize_color_picker');
-function initialize_color_picker() {
-    ?>
+function initialize_color_picker()
+{
+?>
     <script>
-    jQuery(document).ready(function($) {
-        $('#background_color_picker').wpColorPicker({
-            change: function(event, ui) {
-                $('#background_color').val(ui.color.toString());
-            },
-            clear: function() {
-                $('#background_color').val('');
-            }
-        });
+        jQuery(document).ready(function($) {
+            $('#background_color_picker').wpColorPicker({
+                change: function(event, ui) {
+                    $('#background_color').val(ui.color.toString());
+                },
+                clear: function() {
+                    $('#background_color').val('');
+                }
+            });
 
-        $('#text_color_picker').wpColorPicker({
-            change: function(event, ui) {
-                $('#text_color').val(ui.color.toString());
-            },
-            clear: function() {
-                $('#text_color').val('');
-            }
+            $('#text_color_picker').wpColorPicker({
+                change: function(event, ui) {
+                    $('#text_color').val(ui.color.toString());
+                },
+                clear: function() {
+                    $('#text_color').val('');
+                }
+            });
         });
-    });
     </script>
-    <?php
+<?php
 }
 
 function cyberxdc_custom_login_styles()
@@ -152,12 +153,12 @@ function cyberxdc_custom_login_styles()
     // Retrieve options from database
     $login_page_options = get_option('webmasterpro_login_page_settings');
     $background_color = isset($login_page_options['background_color']) ? $login_page_options['background_color'] : '';
-    $text_color = isset($login_page_options['text_color']) ? $login_page_options['text_color'] : '';    
+    $text_color = isset($login_page_options['text_color']) ? $login_page_options['text_color'] : '';
     $background_image = isset($login_page_options['background_image']) ? $login_page_options['background_image'] : '';
     $logo_image = isset($login_page_options['logo_image']) ? $login_page_options['logo_image'] : '';
     $logo_url = isset($login_page_options['logo_url']) ? $login_page_options['logo_url'] : '';
 
-    
+
 
     // Output custom styles
     echo '<style type="text/css">
@@ -182,7 +183,6 @@ function cyberxdc_custom_login_styles()
                 color: ' . esc_attr($text_color) . ' !important;
             }
         </style>';
-
 }
 add_action('login_enqueue_scripts', 'cyberxdc_custom_login_styles');
 function add_custom_class_to_admin_body($classes)
@@ -195,7 +195,8 @@ function add_custom_class_to_admin_body($classes)
 }
 add_filter('admin_body_class', 'add_custom_class_to_admin_body');
 
-function cyberxdc_custom_login_logo_url() {
+function cyberxdc_custom_login_logo_url()
+{
     // Retrieve options from database
     $login_page_options = get_option('webmasterpro_login_page_settings');
     $logo_url = isset($login_page_options['logo_url']) ? $login_page_options['logo_url'] : '';
@@ -212,7 +213,7 @@ add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'cyberxdc_webmast
 function cyberxdc_webmaster_pro_add_update_link($links)
 {
     $update_info = cyberxdc_webmaster_pro_compare_versions();
-    $settings_url = admin_url('options-general.php?page=webmasterpro');
+    $settings_url = admin_url('admin.php?page=webmasterpro-settings');
     $settings_link = '<a href="' . esc_url($settings_url) . '">Settings</a>';
     array_unshift($links, $settings_link);
     if ($update_info['has_update']) {
@@ -299,7 +300,7 @@ function cyberxdc_webmasterpro_dashboard_widget()
         <p>WebMasterPro is a security-focused plugin designed to enhance the security of your website. It provides various features to protect your site from common security threats.</p>
         <p>Explore the plugin settings and features to learn more about how WebMasterPro can help safeguard your website.</p>
         <br>
-        <a href="<?php echo admin_url('admin.php?page=cyberxdc-dashboard'); ?>" class="button button-primary">Explore More</a>
+        <a href="<?php echo admin_url('admin.php?page=webmasterpro'); ?>" class="button button-primary">Explore More</a>
         <br>
         <br>
         <h4><b>Recent Activity Log</b></h4>
@@ -336,7 +337,7 @@ function cyberxdc_webmasterpro_dashboard_widget()
 // Hook into the WordPress dashboard
 function add_cyberxdc_webmasterpro_dashboard_widgets()
 {
-    wp_add_dashboard_widget('cyberxdc_webmasterpro_dashboard_widget', 'CyberXDC Dashboard', 'cyberxdc_webmasterpro_dashboard_widget');
+    wp_add_dashboard_widget('cyberxdc_webmasterpro_dashboard_widget', 'WebMasterPro', 'cyberxdc_webmasterpro_dashboard_widget');
 }
 
 // Function to ensure our widget is first
@@ -420,5 +421,3 @@ function cyberxdc_webmasterpro_enqueue_custom_scripts()
 }
 
 add_action('wp_enqueue_scripts', 'cyberxdc_webmasterpro_enqueue_custom_scripts');
-
-
