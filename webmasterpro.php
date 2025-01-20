@@ -236,6 +236,8 @@ function cyberxdc_webmaster_pro_handle_plugin_update_function()
         // Perform the update
         $update_result = cyberxdc_webmaster_pro_custom_update_functionality();
 
+        error_log('Update result: ' . var_export($update_result, true));
+
         // Set a transient to store the update result
         if ($update_result === true) {
             set_transient('cxdc_webmaster_pro_update_notice', 'success', 30); // Set to expire in 30 seconds
