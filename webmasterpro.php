@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://cyberxdc.online
- * @since             1.0.0
+ * @since             1.0.1
  * @package           Webmasterpro
  *
  * @wordpress-plugin
  * Plugin Name:       WebMasterPro
  * Plugin URI:        https://cyberxdc.online
  * Description:       WebMasterPro offers essential WordPress plugin solutions for seamless website management, including SMTP, security enhancements, SEO optimization, contact forms, database management, and versatile shortcodes.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            CyberXDC
  * Author URI:        https://cyberxdc.online/
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ if (!defined('WPINC')) {
 }
 if (!defined('WEBMASTERPRO_VERSION')) {
     // Replace the version number of the plugin with a date, like YYYYMMDD to bust cache
-    define('WEBMASTERPRO_VERSION', '1.0.0');
+    define('WEBMASTERPRO_VERSION', '1.0.1');
 }
 if (!defined('WEBMASTERPRO_PATH')) {
     define('WEBMASTERPRO_PATH', plugin_dir_path(__FILE__));
@@ -107,7 +107,7 @@ require plugin_dir_path(__FILE__) . 'admin/pages/class-cxdc-webmasterpro-setting
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    1.0.1
  */
 function run_webmasterpro()
 {
