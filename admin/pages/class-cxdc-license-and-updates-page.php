@@ -8,85 +8,85 @@ function cxdc_webmaster_pro_license_and_updates_page()
     $latest_version = isset($update_info['latest_version']) ? $update_info['latest_version'] : 'Unknown';
 
     $notice = '';
-        $license_key = get_option('cxdc_webmaster_pro_license_key');
-        $license_status = get_option('cxdc_webmaster_pro_license_status');
-        // Handle License Activation
-        if (isset($_POST['activate_license'])) {
-            check_admin_referer('cxdc_webmaster_pro_activate_license_nonce');
-            $activation_api_url = WEBMASTERPRO_PLUGIN_URL . '/licenses/activate';
-            // Prepare data for the activation request
-            $activation_data = array(
-                'license_key' => $license_key,
-                'domain' => home_url(),
-                'user_email' => get_option('admin_email'),
-                'user_name' => get_option('admin_user'),
-                'server_name' => gethostname(),
-            );
+    $license_key = get_option('cxdc_webmaster_pro_license_key');
+    $license_status = get_option('cxdc_webmaster_pro_license_status');
+    // Handle License Activation
+    if (isset($_POST['activate_license'])) {
+        check_admin_referer('cxdc_webmaster_pro_activate_license_nonce');
+        $activation_api_url = WEBMASTERPRO_PLUGIN_URL . '/licenses/activate';
+        // Prepare data for the activation request
+        $activation_data = array(
+            'license_key' => $license_key,
+            'domain' => home_url(),
+            'user_email' => get_option('admin_email'),
+            'user_name' => get_option('admin_user'),
+            'server_name' => gethostname(),
+        );
 
-            // Send activation request
-            $activation_response = wp_remote_post($activation_api_url, array('body' => $activation_data));
+        // Send activation request
+        $activation_response = wp_remote_post($activation_api_url, array('body' => $activation_data));
 
-            error_log(print_r($activation_response, true));
+        error_log(print_r($activation_response, true));
 
-            if (is_wp_error($activation_response)) {
-                $notice = '<div class="notice notice-error is-dismissible"><p>Error activating license: ' . $activation_response->get_error_message() . '</p></div>';
+        if (is_wp_error($activation_response)) {
+            $notice = '<div class="notice notice-error is-dismissible"><p>Error activating license: ' . $activation_response->get_error_message() . '</p></div>';
+        } else {
+            $response_code = wp_remote_retrieve_response_code($activation_response);
+            $response_body = wp_remote_retrieve_body($activation_response);
+            $response_data = json_decode($response_body, true);
+
+            if ($response_code == 200) {
+                // Successful activation
+                update_option('cxdc_webmaster_pro_license_status', 'active');
+                update_option('cxdc_webmaster_pro_license_key', $license_key);
+                delete_option('cxdc_webmaster_pro_license_validation_failed_date');
+                wp_clear_scheduled_hook('cxdc_webmaster_pro_delete_plugin_events');
+                $notice = '<div class="notice notice-success is-dismissible"><p>License activated successfully.</p></div>';
             } else {
-                $response_code = wp_remote_retrieve_response_code($activation_response);
-                $response_body = wp_remote_retrieve_body($activation_response);
-                $response_data = json_decode($response_body, true);
-
-                if ($response_code == 200) {
-                    // Successful activation
-                    update_option('cxdc_webmaster_pro_license_status', 'active');
-                    update_option('cxdc_webmaster_pro_license_key', $license_key);
-                    delete_option('cxdc_webmaster_pro_license_validation_failed_date');
-                    wp_clear_scheduled_hook('cxdc_webmaster_pro_delete_plugin_events');
-                    $notice = '<div class="notice notice-success is-dismissible"><p>License activated successfully.</p></div>';
-                } else {
-                    $error_message = isset($response_data['message']) ? $response_data['message'] : 'Unknown error.';
-                    $notice = '<div class="notice notice-error is-dismissible"><p>Error activating license: ' . $error_message . '</p></div>';
-                }
+                $error_message = isset($response_data['message']) ? $response_data['message'] : 'Unknown error.';
+                $notice = '<div class="notice notice-error is-dismissible"><p>Error activating license: ' . $error_message . '</p></div>';
             }
         }
+    }
 
-        // Handle License Generation
-        if (isset($_POST['generate_license'])) {
-            check_admin_referer('cxdc_webmaster_pro_generate_license_nonce');
+    // Handle License Generation
+    if (isset($_POST['generate_license'])) {
+        check_admin_referer('cxdc_webmaster_pro_generate_license_nonce');
 
-            // Prepare data for generating the license
-            $generation_data = array(
-                'generator' => home_url(),
-                'user_name' => get_option('admin_user'),
-                'user_email' => get_option('admin_email'),
-            );
+        // Prepare data for generating the license
+        $generation_data = array(
+            'generator' => home_url(),
+            'user_name' => get_option('admin_user'),
+            'user_email' => get_option('admin_email'),
+        );
 
-            $generation_api_url = WEBMASTERPRO_PLUGIN_URL . '/licenses/generate';
+        $generation_api_url = WEBMASTERPRO_PLUGIN_URL . '/licenses/generate';
 
-            // Send the POST request to the license generation API
-            $generation_response = wp_remote_post($generation_api_url, array('body' => $generation_data));
+        // Send the POST request to the license generation API
+        $generation_response = wp_remote_post($generation_api_url, array('body' => $generation_data));
 
-            error_log('License generation response: ' . print_r($generation_response, true));
+        error_log('License generation response: ' . print_r($generation_response, true));
 
-            if (is_wp_error($generation_response)) {
-                $notice = '<div class="notice notice-error is-dismissible"><p>Error generating license: ' . $generation_response->get_error_message() . '</p></div>';
+        if (is_wp_error($generation_response)) {
+            $notice = '<div class="notice notice-error is-dismissible"><p>Error generating license: ' . $generation_response->get_error_message() . '</p></div>';
+        } else {
+            $response_code = wp_remote_retrieve_response_code($generation_response);
+            $response_body = wp_remote_retrieve_body($generation_response);
+            $response_data = json_decode($response_body, true);
+
+            if ($response_code == 200 && isset($response_data['license_key'])) {
+                // License generated successfully
+                $generated_license_key = $response_data['license_key'];
+                update_option('cxdc_webmaster_pro_license_key', $generated_license_key);
+                update_option('cxdc_webmaster_pro_license_status', 'inactive');
+
+                $notice = '<div class="notice notice-success is-dismissible"><p>License generated successfully: ' . esc_html($generated_license_key) . '</p></div>';
             } else {
-                $response_code = wp_remote_retrieve_response_code($generation_response);
-                $response_body = wp_remote_retrieve_body($generation_response);
-                $response_data = json_decode($response_body, true);
-
-                if ($response_code == 200 && isset($response_data['license_key'])) {
-                    // License generated successfully
-                    $generated_license_key = $response_data['license_key'];
-                    update_option('cxdc_webmaster_pro_license_key', $generated_license_key);
-                    update_option('cxdc_webmaster_pro_license_status', 'inactive');
-
-                    $notice = '<div class="notice notice-success is-dismissible"><p>License generated successfully: ' . esc_html($generated_license_key) . '</p></div>';
-                } else {
-                    $error_message = isset($response_data['message']) ? $response_data['message'] : 'Unknown error.';
-                    $notice = '<div class="notice notice-error is-dismissible"><p>Error generating license: ' . $error_message . '</p></div>';
-                }
+                $error_message = isset($response_data['message']) ? $response_data['message'] : 'Unknown error.';
+                $notice = '<div class="notice notice-error is-dismissible"><p>Error generating license: ' . $error_message . '</p></div>';
             }
         }
+    }
 ?>
     <div class="webmasterpro-wrap wrap">
         <div class="container">
@@ -96,48 +96,49 @@ function cxdc_webmaster_pro_license_and_updates_page()
                     <p>Welcome to the Webmasterpro Updates & Licenses page! Keep your plugin secure and feature-rich by staying up-to-date with the latest version.</p>
                 </div>
                 <div class="webmasterpro-content">
-                    <div class="webmasterpro-update-info child_card">
-                        <h3>Update Plugin</h3>
-                        <p>Welcome to the Webmasterpro Updates & Licenses page! Keep your plugin secure and feature-rich by staying up-to-date with the latest version.</p>
-                        <p>Plugin Version: <?php echo esc_html($current_version); ?></p>
-                        <?php if ($has_update) : ?>
-                            <p class="webmasterpro-update-info-message" style="color: red; background-color: #f8d7da;">New Version Available: <?php echo esc_html($latest_version); ?></p>
-                            <p>Click the button below to update the plugin to the latest version.</p>
-                            <form method="post">
-                                <button type="submit" name="update_plugin" class="button button-primary">Update Plugin to Latest Version</button>
-                            </form>
-                        <?php else : ?>
-                            <div class="webmasterpro-update-info-message">You are using the latest version of the plugin.</div>
-                        <?php endif; ?>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col w-100 mw-100 child_card">
-                            <div class="license_section">
-                                <?php
-                                if ($license_key && $license_status == 'active') {
-                                    echo "<h3>License Information</h3>";
-                                    echo "<p>License Key: " . esc_html(obfuscate_license_key($license_key)) . "</p>";
-                                    echo "<p>License Status: Active</p>";
-                                } elseif ($license_status == 'inactive') {
-                                ?>
-                                    <h3>Activate License</h3>
-                                    <form method="post">
-                                        <?php wp_nonce_field('cxdc_webmaster_pro_activate_license_nonce'); ?>
-                                        <input type="text" name="license_key" placeholder="Enter License Key" value="<?php echo $license_key; ?>" required disabled>
-                                        <input type="submit" class="button button-primary" name="activate_license" value="Activate License">
-                                    </form>
-                                <?php
-                                } else {
-                                ?>
-                                    <h3>Generate License</h3>
-                                    <form method="post">
-                                        <?php wp_nonce_field('cxdc_webmaster_pro_generate_license_nonce'); ?>
-                                        <input type="submit" class="button button-primary" name="generate_license" value="Generate License">
-                                    </form>
-                                <?php
-                                }
-                                ?>
+                    <div style="display: flex;" class="flex-d-row">
+                        <div class="webmasterpro-update-info child_card">
+                            <h3>Update Plugin</h3>
+                            <p>Welcome to the Webmasterpro Updates & Licenses page! Keep your plugin secure and feature-rich by staying up-to-date with the latest version.</p>
+                            <p>Plugin Version: <?php echo esc_html($current_version); ?></p>
+                            <?php if ($has_update) : ?>
+                                <p class="webmasterpro-update-info-message" style="color: red; background-color: #f8d7da;">New Version Available: <?php echo esc_html($latest_version); ?></p>
+                                <p>Click the button below to update the plugin to the latest version.</p>
+                                <form method="post">
+                                    <button type="submit" name="update_plugin" class="button button-primary">Update Plugin to Latest Version</button>
+                                </form>
+                            <?php else : ?>
+                                <div class="webmasterpro-update-info-message">You are using the latest version of the plugin.</div>
+                            <?php endif; ?>
+                        </div>
+                        <div style="width: 45%; margin-left: 4px;" class="row w-25">
+                            <div class="col w-100 mw-100 child_card">
+                                <div class="license_section">
+                                    <?php
+                                    if ($license_key && $license_status == 'active') {
+                                        echo "<h3>License Information</h3>";
+                                        echo "<p>License Key: " . esc_html(obfuscate_license_key($license_key)) . "</p>";
+                                        echo "<p>License Status: Active</p>";
+                                    } elseif ($license_status == 'inactive') {
+                                    ?>
+                                        <h3>Activate License</h3>
+                                        <form method="post">
+                                            <?php wp_nonce_field('cxdc_webmaster_pro_activate_license_nonce'); ?>
+                                            <input type="text" name="license_key" placeholder="Enter License Key" value="<?php echo $license_key; ?>" required disabled>
+                                            <input type="submit" class="button button-primary" name="activate_license" value="Activate License">
+                                        </form>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <h3>Generate License</h3>
+                                        <form method="post">
+                                            <?php wp_nonce_field('cxdc_webmaster_pro_generate_license_nonce'); ?>
+                                            <input type="submit" class="button button-primary" name="generate_license" value="Generate License">
+                                        </form>
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
