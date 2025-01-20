@@ -94,7 +94,7 @@ class Webmasterpro_Dashboard
 
                     <!-- License Information Section -->
                     <div class="row">
-                        <div class="col w-100 mw-100 child_card">
+                        <div style="padding: 0px;" class="col w-100 mw-100 p-0">
                             <div class="license_section">
                                 <?php
                                 if ($license_key && $license_status == 'active') {
@@ -102,33 +102,26 @@ class Webmasterpro_Dashboard
                                     echo "<p>License Key: " . esc_html($this->obfuscate_license_key($license_key)) . "</p>";
                                     echo "<p>License Status: Active</p>";
                                 } else {
-                                ?>
-                                    <h3>Activate License</h3>
-                                    <?php echo $notice; ?>
-                                    <form method="post">
-                                        <?php wp_nonce_field('cxdc_webmaster_pro_activate_license_nonce'); ?>
-                                        <input type="text" name="license_key" placeholder="Enter License Key" required>
-                                        <input type="submit" class="button button-primary" name="activate_license" value="Activate License">
-                                    </form>
-                                    <br>
-                                    <?php
-                                    // Display warning if the license will be deactivated soon
                                     $failed_date = get_option('cxdc_webmaster_pro_license_validation_failed_date');
                                     if ($failed_date) {
                                         $days_remaining = 30 - floor((time() - $failed_date) / DAY_IN_SECONDS);
                                         if ($days_remaining > 0) {
-                                    ?>
+                                ?>
                                             <p style="margin: 0px; padding: 12px;" class="update-message notice inline notice-error notice-alt">
-                                                Your plugin does not have a valid license key. Get a license from <a href="https://webmasterpro.com">WebMasterPro</a> and activate it to use the plugin permanently.
-                                                You have <?php echo esc_html($days_remaining); ?> days remaining in your trial period.
-                                            </p> <?php
-                                                } else {
-                                                    ?>
-                                            <p style="margin: 0px; padding: 12px;" class="update-message notice inline notice-error notice-alt">This plugin will be deactivated soon.</p>
+                                                Your plugin is not genuinely activated. It will be deactivated after <?php echo esc_html($days_remaining); ?> days.
+                                                Please <a href="<?php echo admin_url('admin.php?page=webmasterpro-license-and-updates'); ?>">activate your license here</a> to continue using the plugin without interruption.
+                                            </p>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <p style="margin: 0px; padding: 12px;" class="update-message notice inline notice-error notice-alt">
+                                                Your plugin is not genuinely activated and will be deactivated soon.
+                                                Please <a href="<?php echo admin_url('admin.php?page=webmasterpro-license-and-updates'); ?>">activate your license here</a>.
+                                            </p>
                                 <?php
-                                                }
-                                            }
                                         }
+                                    }
+                                }
                                 ?>
                             </div>
                         </div>

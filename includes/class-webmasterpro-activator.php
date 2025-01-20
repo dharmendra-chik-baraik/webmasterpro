@@ -113,6 +113,7 @@ class Webmasterpro_Activator
 
 		// Initialize plugin options if not already set
 		self::initialize_options();
+		
 	}
 
 	/**

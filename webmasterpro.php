@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The plugin bootstrap file
  *
@@ -29,11 +30,6 @@ ob_start();
 if (!defined('WPINC')) {
     die;
 }
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
 if (!defined('WEBMASTERPRO_VERSION')) {
     // Replace the version number of the plugin with a date, like YYYYMMDD to bust cache
     define('WEBMASTERPRO_VERSION', '1.0.0');
@@ -70,9 +66,11 @@ if (!defined('WEBMASTERPRO_PLUGIN_NAME')) {
  */
 function activate_webmasterpro()
 {
+    // Ensure no output has been sent before calling wp_redirect
+    if (ob_get_level()) ob_end_clean();  
+    // Include the activator class and run the activation function
     require_once plugin_dir_path(__FILE__) . 'includes/class-webmasterpro-activator.php';
     Webmasterpro_Activator::activate();
-    ob_get_clean();
 }
 
 /**
