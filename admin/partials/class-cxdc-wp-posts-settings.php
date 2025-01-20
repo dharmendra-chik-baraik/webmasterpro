@@ -222,8 +222,7 @@ class webmasterpro_Page_Settings {
         $default_page_author = get_option('webmasterpro_default_page_author', '');
         $pages = get_pages();
         $templates = wp_get_theme()->get_page_templates();
-        $users = get_users(array('who' => 'authors'));
-    
+        $users = get_users(array('capability' => 'edit_posts'));    
         // Render HTML
         ?>
         <div class="container">
@@ -369,7 +368,7 @@ class webmasterpro_Post_Settings {
         $default_author = get_option('webmasterpro_default_author', '');
         $categories = get_categories(array('hide_empty' => false));
         $post_formats = get_theme_support('post-formats');
-        $users = get_users(array('who' => 'authors'));
+        $users = get_users(array('capability' => 'edit_posts'));
     
         // Render HTML
         ?>
