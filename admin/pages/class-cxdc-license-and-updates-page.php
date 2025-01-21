@@ -100,7 +100,7 @@ function cxdc_webmaster_pro_license_and_updates_page()
                         <div class="webmasterpro-update-info child_card">
                             <h3>Update Plugin</h3>
                             <p>Welcome to the Webmasterpro Updates & Licenses page! Keep your plugin secure and feature-rich by staying up-to-date with the latest version.</p>
-                            <p>Plugin Version: <?php echo esc_html($current_version); ?></p>
+                            <p style="font-weight: 500; margin-bottom: 25px;">Plugin Version: <?php echo esc_html($current_version); ?></p>
                             <?php if ($has_update) : ?>
                                 <p class="webmasterpro-update-info-message" style="color: red; background-color: #f8d7da;">New Version Available: <?php echo esc_html($latest_version); ?></p>
                                 <p>Click the button below to update the plugin to the latest version.</p>
