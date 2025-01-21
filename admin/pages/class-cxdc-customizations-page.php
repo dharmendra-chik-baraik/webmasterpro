@@ -338,11 +338,11 @@ class WebMasterPro_Customization
                         <?php endif; ?>
                         <table class="form-table">
                             <tr>
-                                <th scope="row"><label for="header_script">Custom CSS/JavaScript for Header</label></th>
+                                <th scope="row"><label for="header_script">Custom JavaScript for Header</label></th>
                                 <td><textarea name="header_script" id="header_script" class="large-text input_bg" rows="10"><?php echo esc_textarea($header_script); ?></textarea></td>
                             </tr>
                             <tr>
-                                <th scope="row"><label for="footer_script">Custom CSS/JavaScript for Footer</label></th>
+                                <th scope="row"><label for="footer_script">Custom JavaScript for Footer</label></th>
                                 <td><textarea name="footer_script" id="footer_script" class="large-text input_bg" rows="10"><?php echo esc_textarea($footer_script); ?></textarea></td>
                             </tr>
                         </table>

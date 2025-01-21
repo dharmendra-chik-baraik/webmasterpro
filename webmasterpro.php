@@ -392,9 +392,8 @@ function cyberxdc_webmasterpro_enqueue_custom_css()
 add_action('wp_enqueue_scripts', 'cyberxdc_webmasterpro_enqueue_custom_css');
 
 
-// Enqueue custom scripts in header and footer
-function cyberxdc_webmasterpro_enqueue_custom_scripts()
-{
+// Enqueue custom scripts in the header and footer
+function cyberxdc_webmasterpro_enqueue_custom_scripts() {
     $custom_script_options = get_option('webmasterpro_custom_script_settings');
 
     // Check if custom script options exist and if they are in the expected format
@@ -406,18 +405,25 @@ function cyberxdc_webmasterpro_enqueue_custom_scripts()
         $header_script = wp_unslash($header_script);
         $footer_script = wp_unslash($footer_script);
 
-        // Sanitize and enqueue header script
-        if (!empty($header_script)) {
-            $sanitized_header_script = wp_strip_all_tags($header_script, true); // Sanitize script
-            wp_add_inline_script('jquery', $sanitized_header_script);
+        // Sanitize scripts
+        $sanitized_header_script = !empty($header_script) ? wp_strip_all_tags($header_script) : '';
+        $sanitized_footer_script = !empty($footer_script) ? wp_strip_all_tags($footer_script) : '';
+
+        // Add header script to wp_head
+        if (!empty($sanitized_header_script)) {
+            add_action('wp_head', function () use ($sanitized_header_script) {
+                echo "<script>{$sanitized_header_script}</script>";
+            });
         }
 
-        // Sanitize and enqueue footer script
-        if (!empty($footer_script)) {
-            $sanitized_footer_script = wp_strip_all_tags($footer_script, true); // Sanitize script
-            wp_add_inline_script('jquery', $sanitized_footer_script);
+        // Add footer script to wp_footer
+        if (!empty($sanitized_footer_script)) {
+            add_action('wp_footer', function () use ($sanitized_footer_script) {
+                echo "<script>{$sanitized_footer_script}</script>";
+            });
         }
     }
 }
 
-add_action('wp_enqueue_scripts', 'cyberxdc_webmasterpro_enqueue_custom_scripts');
+add_action('init', 'cyberxdc_webmasterpro_enqueue_custom_scripts');
+

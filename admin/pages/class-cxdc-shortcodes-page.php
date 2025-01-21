@@ -4,20 +4,33 @@ class WebMasterPro_Shortcodes
 {
     public function __construct()
     {
-        // Register shortcodes
         add_shortcode('webmasterpro_login_form', array($this, 'custom_login_form_shortcode'));
         add_shortcode('webmasterpro_registration_form', array($this, 'custom_registration_form_shortcode'));
         add_shortcode('webmasterpro_forgot_password_form', array($this, 'custom_forgot_password_form_shortcode'));
     }
-
     // Shortcode: Login Form
     public function custom_login_form_shortcode($atts)
     {
+        // Extract shortcode attributes and set defaults
+        $atts = shortcode_atts(
+            array(
+                'redirect' => home_url('/wp-admin'), // Default redirect to the home page
+            ),
+            $atts
+        );
+
+        // If the user is already logged in, display a message
         if (is_user_logged_in()) {
             return '<p>You are already logged in.</p>';
         } else {
             ob_start();
-            wp_login_form();
+
+            // Output the WordPress login form with the custom redirect URL
+            $args = array(
+                'redirect' => esc_url($atts['redirect']),
+            );
+            wp_login_form($args);
+
             return ob_get_clean();
         }
     }
@@ -25,32 +38,58 @@ class WebMasterPro_Shortcodes
     // Shortcode: Registration Form
     public function custom_registration_form_shortcode($atts)
     {
+        // Extract shortcode attributes and set defaults
+        $atts = shortcode_atts(
+            array(
+                'redirect' => home_url('/wp-admin'), // Default redirect to the home page
+            ),
+            $atts
+        );
+
+        // If the user is already logged in, display a message
         if (is_user_logged_in()) {
             return '<p>You are already logged in.</p>';
         }
 
+        // Check if registration is enabled
         if (!get_option('users_can_register')) {
             return '<p>Registration is currently disabled.</p>';
         }
 
-        return '<a href="' . esc_url(wp_registration_url()) . '">Register</a>';
+        // Generate the registration URL with the custom redirect parameter
+        $registration_url = esc_url(add_query_arg('redirect_to', $atts['redirect'], wp_registration_url()));
+
+        return '<a href="' . $registration_url . '">Register</a>';
     }
+
 
     // Shortcode: Forgot Password Form
     public function custom_forgot_password_form_shortcode($atts)
     {
+        // Extract shortcode attributes and set defaults
+        $atts = shortcode_atts(
+            array(
+                'redirect' => home_url('/wp-admin'), // Default redirect to the home page
+            ),
+            $atts
+        );
+
+        // If the user is already logged in, display a message
         if (is_user_logged_in()) {
             return '<p>You are already logged in.</p>';
         }
 
-        return '<a href="' . esc_url(wp_lostpassword_url()) . '">Forgot Password</a>';
+        // Generate the lost password URL with the custom redirect parameter
+        $forgot_password_url = esc_url(add_query_arg('redirect_to', $atts['redirect'], wp_lostpassword_url()));
+
+        return '<a href="' . $forgot_password_url . '">Forgot Password</a>';
     }
+
 
     // Shortcodes Page Content
     public function webmasterpro_shortcodes_page()
     {
         $all_shortcodes = $this->get_all_shortcodes();
-
 ?>
         <div class="wrap">
             <div class="container">
@@ -94,7 +133,7 @@ class WebMasterPro_Shortcodes
                             </tbody>
                         </table>
                     </div>
-                    <div class="card col ">
+                    <div class="card col">
                         <?php
                         if (!empty($all_shortcodes)) {
                             echo '<h2>List of WordPress Shortcodes in Posts:</h2>';

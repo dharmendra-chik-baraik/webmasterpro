@@ -103,28 +103,23 @@ public function track_visitor_logs()
         return;
     }
 
+    // Get current page URL
+    $page_visited = $_SERVER['REQUEST_URI'];
+
+    // Exclude specific URLs from being logged
+    $excluded_urls = ['/wp-cron.php', '/exclude-this-page']; // Add any URLs to exclude here
+    foreach ($excluded_urls as $excluded_url) {
+        if (strpos($page_visited, $excluded_url) !== false) {
+            return; // Skip logging for excluded URLs
+        }
+    }
+
     // Get visitor IPs
     $ip4 = $_SERVER['REMOTE_ADDR'] ?? '';
     $ip6 = $_SERVER['HTTP_CLIENT_IP'] ?? '';
 
-    // Get country (using a third-party service like ipinfo.io)
-    $country = 'Unknown';
-    if ($ip4 && filter_var($ip4, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-        $response = wp_remote_get("http://ipinfo.io/{$ip4}/country");
-        if (is_array($response) && !is_wp_error($response)) {
-            $country_data = json_decode(wp_remote_retrieve_body($response), true);
-            if (isset($country_data['country'])) {
-                $country = trim($country_data['country']);
-                if (strlen($country) > 255) {
-                    $country = substr($country, 0, 255); // Truncate if too long
-                }
-            } else {
-                error_log('Error fetching country info: ' . print_r($response, true));
-            }
-        } else {
-            error_log('Error fetching country info: ' . print_r($response, true));
-        }
-    }
+    // Get country
+    $country = $this->get_country_by_ip($ip4);
 
     // Get browser and device
     $browser = $this->get_user_agent_browser();
@@ -133,20 +128,17 @@ public function track_visitor_logs()
     // Get current time
     $time = current_time('mysql');
 
-    // Get current page URL
-    $page_visited = $_SERVER['REQUEST_URI'];
-
-    // Store the data
+    // Store the data in the database
     global $wpdb;
     $table_name = $wpdb->prefix . 'cxdcwmpro_visitor_logs'; // Adjust table name as needed
     $result = $wpdb->insert($table_name, [
-        'ip4' => $ip4,
-        'ip6' => $ip6,
-        'country' => $country,
-        'browser' => $browser,
-        'device' => $device,
-        'time' => $time,
-        'page_visited' => $page_visited,
+        'ip4'           => $ip4,
+        'ip6'           => $ip6,
+        'country'       => $country,
+        'browser'       => $browser,
+        'device'        => $device,
+        'time'          => $time,
+        'page_visited'  => $page_visited,
     ]);
 
     // Check for errors
@@ -154,6 +146,43 @@ public function track_visitor_logs()
         error_log('Error inserting visitor log: ' . $wpdb->last_error);
     }
 }
+
+/**
+ * Get the country of the visitor by their IP address using ipinfo.io.
+ *
+ * @param string $ip The IPv4 address of the visitor.
+ * @return string The country code or 'Unknown' if unavailable.
+ */
+private function get_country_by_ip($ip)
+{
+    $token = '400a1d917f8378'; // Replace this with your ipinfo.io token
+
+    // Validate the IP address
+    if (!$ip || !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+        return 'Unknown';
+    }
+
+    // Construct the API URL with the token
+    $url = "https://ipinfo.io/{$ip}/country?token={$token}";
+
+    // Fetch the data using WordPress HTTP API
+    $response = wp_remote_get($url);
+
+    // Check if the response is valid and not an error
+    if (is_array($response) && !is_wp_error($response)) {
+        $country_data = wp_remote_retrieve_body($response);
+        $country = trim($country_data);
+        
+        // Ensure the country code is valid and within acceptable length
+        if ($country && strlen($country) <= 255) {
+            return $country;
+        }
+    }
+
+    // If no valid data is found, return 'Unknown'
+    return 'Unknown';
+}
+
 
 // Method to get user agent browser
 private function get_user_agent_browser()
