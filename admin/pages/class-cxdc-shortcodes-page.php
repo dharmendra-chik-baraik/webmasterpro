@@ -212,3 +212,5 @@ class WebMasterPro_Shortcodes
 
 // Instantiate the class
 $webmasterpro_shortcodes = new WebMasterPro_Shortcodes();
+
+// test

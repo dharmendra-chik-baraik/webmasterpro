@@ -119,7 +119,7 @@ function cxdc_webmaster_pro_license_and_updates_page()
                                         echo "<h3>License Information</h3>";
                                         echo "<p>License Key: " . esc_html(obfuscate_license_key($license_key)) . "</p>";
                                         echo "<p>License Status: Active</p>";
-                                    } elseif ($license_status == 'inactive') {
+                                    } elseif ($license_key && $license_status == 'inactive') {
                                     ?>
                                         <h3>Activate License</h3>
                                         <form method="post">
