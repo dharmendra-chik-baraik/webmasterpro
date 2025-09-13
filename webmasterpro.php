@@ -38,10 +38,10 @@ if (!defined('WEBMASTERPRO_PATH')) {
     define('WEBMASTERPRO_PATH', plugin_dir_path(__FILE__));
 }
 if (!defined('WEBMASTERPRO_PLUGIN_URL')) {
-    define('WEBMASTERPRO_PLUGIN_URL', 'https://cyberxdc.online');
+    define('WEBMASTERPRO_PLUGIN_URL', 'https://webmasterpro.free.nf');
 }
 if (!defined('WEBMASTERPRO_AUTHOR_URI')) {
-    define('WEBMASTERPRO_AUTHOR_URI', 'https://cyberxdc.online');
+    define('WEBMASTERPRO_AUTHOR_URI', 'https://webmasterpro.free.nf');
 }
 if (!defined('WEBMASTERPRO_TEXT_DOMAIN')) {
     define('WEBMASTERPRO_TEXT_DOMAIN', 'webmasterpro');
